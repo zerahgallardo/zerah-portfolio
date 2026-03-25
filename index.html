@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zerah Gallardo — UX Researcher</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F5F0E8;
+    --warm-white: #FAF7F2;
+    --terracotta: #C4714A;
+    --terracotta-light: #D4856A;
+    --terracotta-pale: #F0DDD4;
+    --brown: #5C3D2E;
+    --warm-grey: #9E9189;
+    --dark: #2C2420;
+    --mid: #6B5B53;
+    --sand: #E8DDD0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--warm-white);
+    color: var(--dark);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 56px;
+    background: rgba(250, 247, 242, 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s;
+  }
+  nav.scrolled { border-bottom-color: var(--sand); }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: var(--dark);
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    font-size: 0.8rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--mid);
+    text-decoration: none;
+    transition: color 0.2s;
+    font-weight: 400;
+  }
+  .nav-links a:hover { color: var(--terracotta); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 80px;
+  }
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 56px;
+  }
+  .hero-eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    font-weight: 500;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .hero-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 6vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--dark);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.35s forwards;
+  }
+  .hero-name em { font-style: italic; color: var(--terracotta); }
+  .hero-desc {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--mid);
+    max-width: 420px;
+    margin-bottom: 40px;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.5s forwards;
+  }
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.65s forwards;
+  }
+  .btn-primary {
+    background: var(--terracotta);
+    color: white;
+    padding: 14px 28px;
+    font-size: 0.8rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    transition: background 0.2s, transform 0.2s;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--brown); transform: translateY(-1px); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--mid);
+    padding: 14px 28px;
+    font-size: 0.8rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    border: 1px solid var(--sand);
+    transition: border-color 0.2s, color 0.2s;
+    cursor: pointer;
+    display: inline-block;
+  }
+  .btn-secondary:hover { border-color: var(--terracotta); color: var(--terracotta); }
+
+  .hero-right {
+    background: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-graphic {
+    position: relative;
+    width: 320px;
+    height: 400px;
+    opacity: 0;
+    animation: fadeIn 1s 0.8s forwards;
+  }
+
+  .hero-photo-frame {
+    width: 320px;
+    height: 400px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+  }
+  .hero-photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 12%;
+    display: block;
+  }
+
+  .hero-deco-circle {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 1px solid var(--terracotta-pale);
+    top: 30px;
+    right: 30px;
+  }
+  .hero-deco-line {
+    position: absolute;
+    bottom: 60px;
+    left: 40px;
+    width: 80px;
+    height: 1px;
+    background: var(--terracotta);
+    opacity: 0.4;
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 100px 56px; }
+  .section-label {
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    font-weight: 500;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--terracotta);
+    opacity: 0.5;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 300;
+    line-height: 1.2;
+    color: var(--dark);
+    margin-bottom: 48px;
+  }
+  .section-title em { font-style: italic; color: var(--terracotta); }
+
+  /* ── ABOUT ── */
+  #about { background: var(--cream); }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+    max-width: 1100px;
+  }
+  .about-text p { font-size: 1rem; line-height: 1.85; color: var(--mid); font-weight: 300; margin-bottom: 20px; }
+  .about-text p strong { color: var(--dark); font-weight: 500; }
+  .about-text .philosophy {
+    background: var(--terracotta-pale);
+    border-left: 3px solid var(--terracotta);
+    padding: 16px 20px;
+    font-size: 0.95rem;
+    color: var(--brown);
+    line-height: 1.75;
+    margin-top: 8px;
+    font-style: italic;
+  }
+  .about-details { display: flex; flex-direction: column; gap: 32px; }
+  .detail-label { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--terracotta); font-weight: 500; margin-bottom: 10px; }
+  .detail-value { font-size: 0.95rem; color: var(--mid); line-height: 1.7; font-weight: 300; }
+  .detail-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+  .tag { background: var(--terracotta-pale); color: var(--brown); padding: 4px 12px; font-size: 0.75px; letter-spacing: 0.5px; font-weight: 400; font-size: 0.75rem; }
+
+  /* ── WORK ── */
+  #work { background: var(--warm-white); }
+  .work-intro { font-size: 1rem; color: var(--mid); font-weight: 300; line-height: 1.75; max-width: 560px; margin-bottom: 60px; }
+  .case-studies { display: grid; grid-template-columns: 1fr; gap: 2px; }
+  .case-card {
+    background: var(--cream);
+    padding: 48px 40px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+    text-decoration: none;
+    display: block;
+  }
+  .case-card:hover { background: var(--sand); }
+  .case-card::after { display: none; }
+  .case-number { font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 300; color: var(--terracotta-pale); line-height: 1; margin-bottom: 20px; }
+  .case-company { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--terracotta); font-weight: 500; margin-bottom: 10px; }
+  .case-title { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 400; color: var(--dark); line-height: 1.3; margin-bottom: 14px; }
+  .case-desc { font-size: 0.9rem; color: var(--mid); line-height: 1.75; font-weight: 300; max-width: 760px; border-left: 2px solid var(--terracotta-pale); padding-left: 16px; margin-bottom: 4px; }
+  .case-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 20px; }
+
+  .case-bullets {
+    list-style: none;
+    margin: 14px 0 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .case-bullets li {
+    font-size: 0.82rem;
+    color: var(--mid);
+    line-height: 1.6;
+    font-weight: 300;
+    padding-left: 14px;
+    position: relative;
+  }
+
+  .case-bullets li::before {
+    content: '–';
+    position: absolute;
+    left: 0;
+    color: var(--terracotta);
+    font-weight: 400;
+  }
+  .case-tag { font-size: 0.7rem; letter-spacing: 1px; text-transform: uppercase; color: var(--warm-grey); border: 1px solid var(--sand); padding: 3px 10px; }
+  .case-card.placeholder-card {
+    border: 2px dashed var(--sand);
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 280px;
+    color: var(--warm-grey);
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .case-card.placeholder-card:hover { background: var(--cream); }
+  .case-card.placeholder-card::after { display: none; }
+  .plus-icon { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--sand); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--warm-grey); }
+
+  /* ── RESUME ── */
+  #resume { background: var(--cream); }
+  .resume-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 80px; max-width: 1100px; }
+  .resume-section { margin-bottom: 48px; }
+  .resume-section-title { font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; color: var(--terracotta); font-weight: 500; margin-bottom: 24px; padding-bottom: 10px; border-bottom: 1px solid var(--sand); }
+  .resume-job { margin-bottom: 28px; }
+  .resume-job-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3px; gap: 16px; }
+  .resume-job-title { font-size: 0.95rem; font-weight: 500; color: var(--dark); }
+  .resume-job-dates { font-size: 0.8rem; color: var(--warm-grey); white-space: nowrap; }
+  .resume-job-company { font-size: 0.8rem; color: var(--terracotta); letter-spacing: 0.5px; margin-bottom: 8px; font-weight: 400; }
+  .resume-job-desc { font-size: 0.85rem; color: var(--mid); line-height: 1.7; font-weight: 300; }
+  .skills-group { margin-bottom: 28px; }
+  .skills-group-title { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--terracotta); font-weight: 500; margin-bottom: 12px; }
+  .skills-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+  .skill-pill { background: var(--warm-white); color: var(--mid); padding: 5px 12px; font-size: 0.75rem; font-weight: 400; }
+
+  /* ── CONTACT ── */
+  #contact { background: var(--dark); text-align: center; padding: 100px 56px; }
+  #contact .section-label { justify-content: center; color: var(--terracotta-light); }
+  #contact .section-label::after { background: var(--terracotta-light); }
+  #contact .section-title { color: var(--cream); margin-bottom: 20px; }
+  .contact-sub { font-size: 1rem; color: var(--warm-grey); font-weight: 300; line-height: 1.75; max-width: 480px; margin: 0 auto 48px; }
+  .contact-links { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .contact-link { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; font-size: 0.8rem; letter-spacing: 1.5px; text-transform: uppercase; text-decoration: none; font-weight: 500; transition: all 0.2s; }
+  .contact-link.primary { background: var(--terracotta); color: white; }
+  .contact-link.primary:hover { background: var(--terracotta-light); }
+  .contact-link.secondary { border: 1px solid #4a3c38; color: var(--warm-grey); }
+  .contact-link.secondary:hover { border-color: var(--terracotta-light); color: var(--terracotta-light); }
+
+  /* ── FOOTER ── */
+  footer { background: var(--dark); border-top: 1px solid #3a2c28; padding: 24px 56px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-name { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: #6B5B53; letter-spacing: 1px; }
+  .footer-note { font-size: 0.75rem; color: #4a3c38; letter-spacing: 0.5px; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .reveal { opacity: 1; transform: translateY(0); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.hidden { opacity: 0; transform: translateY(24px); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── TESTIMONIALS ── */
+  #testimonials { background: var(--warm-white); }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    max-width: 1100px;
+  }
+
+  .testimonial-group-title {
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    font-weight: 500;
+    margin-bottom: 24px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--sand);
+  }
+
+  .testimonial-card {
+    background: var(--cream);
+    padding: 28px 32px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+
+  .testimonial-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    font-style: italic;
+    color: var(--dark);
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  .testimonial-quote::before {
+    content: '\201C';
+    font-size: 2.5rem;
+    color: var(--terracotta-pale);
+    line-height: 0;
+    vertical-align: -0.5rem;
+    margin-right: 4px;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .testimonial-attribution {
+    font-size: 0.78rem;
+    color: var(--warm-grey);
+    letter-spacing: 0.5px;
+    font-weight: 400;
+  }
+
+  .testimonial-attribution strong {
+    color: var(--mid);
+    font-weight: 500;
+  }
+
+  .testimonial-placeholder {
+    background: transparent;
+    border: 2px dashed var(--sand);
+    padding: 28px 32px;
+    margin-bottom: 16px;
+    font-size: 0.82rem;
+    color: var(--warm-grey);
+    font-style: italic;
+    line-height: 1.6;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 18px 24px; }
+    section { padding: 80px 24px; }
+    #hero { grid-template-columns: 1fr; }
+    .hero-right { min-height: 300px; }
+    .hero-left { padding: 60px 24px 40px; }
+    .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    .case-studies { grid-template-columns: 1fr; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .resume-layout { grid-template-columns: 1fr; gap: 40px; }
+    footer { flex-direction: column; gap: 8px; text-align: center; }
+    .nav-links { gap: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">Zerah Gallardo</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#testimonials">Testimonials</a></li>
+    <li><a href="#resume">Résumé</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">UX Researcher · Sydney, AU</div>
+    <h1 class="hero-name">Turning user<br>insight into<br><em>product clarity</em></h1>
+    <p class="hero-desc">
+      8+ years leading end-to-end UX research across complex, global products. I help teams understand their users deeply, so decisions are grounded in evidence, not assumption.
+    </p>
+    <div class="hero-cta">
+      <a href="#work" class="btn-primary">View My Work</a>
+      <a href="#contact" class="btn-secondary">Get in Touch</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-graphic">
+      <div class="hero-photo-frame">
+        <img src="zerah-headshot.jpg" alt="Zerah Gallardo — UX Researcher" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">About me</div>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p><strong>I'm Zerah,</strong> a Senior UX Researcher with 8+ years' experience helping teams build with users' needs at the forefront. I've led research across global markets at Block (Afterpay and Cash App), Mastercard, and Tabcorp, working closely with Product and Design to translate complex human behaviour into clear product direction.</p>
+      <p style="margin-top: 20px;">I bring a rigorous yet efficient approach to research, moving quickly without cutting corners and delivering insights that are ready to act on. I'm also deeply curious about where AI is best placed to sharpen and extend my craft.</p>
+      <div class="philosophy">I care about understanding people. Not just what they say, but how they actually behave. My research is grounded in the belief that building for real user needs is the most sustainable path to business success, and the best defence against products gradually worsening for the people they're meant to serve.</div>
+    </div>
+    <div class="about-details reveal">
+      <div class="detail-block">
+        <div class="detail-label">Based in</div>
+        <div class="detail-value">Sydney, Australia</div>
+      </div>
+      <div class="detail-block">
+        <div class="detail-label">Specialisms</div>
+        <div class="detail-tags">
+          <span class="tag">Qualitative Research</span>
+          <span class="tag">Insight Synthesis</span>
+          <span class="tag">Global Markets</span>
+          <span class="tag">AI-Augmented Research</span>
+          <span class="tag">Workshop Facilitation</span>
+          <span class="tag">Mental Models & Attitudes</span>
+          <span class="tag">Root Cause Understanding</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section id="work">
+  <div class="section-label">Selected work</div>
+  <h2 class="section-title">The <em>work</em></h2>
+  <p class="work-intro reveal">Due to confidentiality, I keep project details private, but I'm always happy to talk through my experience in conversation. Below is a snapshot of the types of research I've led across global teams. <em>Ask me about any of these.</em></p>
+
+  <div class="case-studies">
+    <div class="case-card reveal" style="cursor:default;">
+      <div class="case-number">01</div>
+      <div class="case-company">Foundational Discovery</div>
+      <div class="case-title">Understanding users at the root</div>
+      <div class="case-desc">I work best at the fuzzy front end, when the problem space is ambiguous and the team needs clear direction before they can move. My exploratory work is as much about finding the right frame as it is finding the right method.</div>
+      <ul class="case-bullets">
+        <li>Mapped behavioural analogies from fitness and habit-change apps to unlock design direction for a sustainability feature; a reframe that made a complex problem suddenly tractable</li>
+        <li>Designed focus group activities (brand personas, empathy profiles, magic wand exercises) that surfaced unspoken mental models in ways a discussion guide alone couldn't</li>
+        <li>Led foundational research to define customer cohorts and unmet needs ahead of a major strategic initiative; work later credited with putting the team "on the right track" for annual planning</li>
+        <li>Explored how teens think about money management, and how group spend dynamics shape financial decision-making across social and family contexts</li>
+      </ul>
+      <div class="case-tags">
+        <span class="case-tag">In-depth interviews</span>
+        <span class="case-tag">Focus groups</span>
+        <span class="case-tag">Mental models</span>
+        <span class="case-tag">Global markets</span>
+      </div>
+    </div>
+
+    <div class="case-card reveal" style="cursor:default;">
+      <div class="case-number">02</div>
+      <div class="case-company">Evaluative & Usability Research</div>
+      <div class="case-title">Validating decisions with real users</div>
+      <div class="case-desc">I bring a clear sense of what actually needs answering at each stage, and the discipline to not over-engineer it. Good evaluative research gives teams confidence in the decisions that matter, and clarity on what to fix.</div>
+      <ul class="case-bullets">
+        <li>Led sequential rounds of usability testing on an industry-first AR product, progressively sharpening comprehension, findability and experience quality before launch</li>
+        <li>Ran rapid usability studies across multiple concurrent product workstreams, delivering prioritised, bite-sized recommendations that shaped design decisions in real time</li>
+        <li>Managed and analysed 60+ unmoderated interviews in a single week by integrating AI tooling into the synthesis workflow, without compromising on quality or rigour</li>
+        <li>Tested everything from onboarding journeys and reward structures to concept variants and in-product copy across fintech and wagering contexts</li>
+      </ul>
+      <div class="case-tags">
+        <span class="case-tag">Usability testing</span>
+        <span class="case-tag">Concept testing</span>
+        <span class="case-tag">Unmoderated research</span>
+        <span class="case-tag">AI-assisted synthesis</span>
+      </div>
+    </div>
+
+    <div class="case-card reveal" style="cursor:default;">
+      <div class="case-number">03</div>
+      <div class="case-company">Synthesis & Insight Communication</div>
+      <div class="case-title">Making research land across teams</div>
+      <div class="case-desc">Research that stays in a deck doesn't move anything. I put real craft into the moments where insight meets the people who need to act on it.</div>
+      <ul class="case-bullets">
+        <li>Designed and facilitated iterative ideation workshops across hemispheres, pivoting the format mid-sprint when the structure wasn't serving the team</li>
+        <li>Led "How Might We" sessions that took raw findings and turned them into concrete design direction, keeping teams focused without narrowing the solution space too early</li>
+        <li>Ran prioritisation workshops helping cross-functional teams identify the highest-impact, lowest-effort fixes from a landscape of research findings</li>
+        <li>Facilitated a planning session called out by senior stakeholders as "structured, inclusive, and energising", one that directly shaped the product roadmap</li>
+      </ul>
+      <div class="case-tags">
+        <span class="case-tag">Insight synthesis</span>
+        <span class="case-tag">Stakeholder workshops</span>
+        <span class="case-tag">How Might We</span>
+        <span class="case-tag">Storytelling</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="section-label">What others say</div>
+  <h2 class="section-title">Stakeholder <em>testimonials</em></h2>
+
+  <div class="testimonials-grid">
+    <div class="reveal">
+      <div class="testimonial-group-title">From colleagues & stakeholders</div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-quote">Without this research, we would have been on the wrong track. Zerah conducted the research quickly and at a very high quality. She shared results as they came, which helped us shape our thinking in real time.</div>
+        <div class="testimonial-attribution"><strong>Design Partner</strong> · Block</div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-quote">Your work has helped us understand customer needs at a much deeper level, de-risking our approach and inspiring a more strategic mindset across the team. The way you work not only delivers value but brings others along with you, which has amplified your impact even further.</div>
+        <div class="testimonial-attribution"><strong>Product Partner</strong> · Block</div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-quote">She held space for questions and ideas from a variety of perspectives with a lot of grace and commitment to representing what she observed and heard from consumers. It truly helped our team metabolize and come to terms with the realities of a very tricky product experience.</div>
+        <div class="testimonial-attribution"><strong>Design Partner</strong> · Block</div>
+      </div>
+
+    </div>
+
+    <div class="reveal">
+      <div class="testimonial-group-title">From research participants</div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-quote">Friendly, engaging, impartial. Outstanding facilitator.</div>
+        <div class="testimonial-attribution"><strong>Research participant</strong> · Mastercard study</div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-quote">Zerah was very pleasant to speak with! Her questions made me stop and think in a positive way. It was an excellent experience overall.</div>
+        <div class="testimonial-attribution"><strong>Research participant</strong> · Block study</div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-quote">Very easy to speak to, led the session well and asked a lot of questions off the cuff. Almost just like a chat really.</div>
+        <div class="testimonial-attribution"><strong>Research participant</strong> · Mastercard study</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- RESUME -->
+<section id="resume">
+  <div class="section-label">Experience</div>
+  <h2 class="section-title">Résumé <em>highlights</em></h2>
+  <div class="resume-layout">
+    <div class="resume-main reveal">
+      <div class="resume-section">
+        <div class="resume-section-title">Experience</div>
+        <div class="resume-job">
+          <div class="resume-job-header">
+            <span class="resume-job-title">Senior UX Researcher (Global)</span>
+            <span class="resume-job-dates">2022 – 2026</span>
+          </div>
+          <div class="resume-job-company">Block — Afterpay & Cash App</div>
+          <div class="resume-job-desc">Sole UXR for Afterpay globally and Lead UXR for Cash App Commerce, leading end-to-end research across AU, US and UK markets. Played a central role in the research workstream supporting the integration of Afterpay features into Cash App.</div>
+        </div>
+        <div class="resume-job">
+          <div class="resume-job-header">
+            <span class="resume-job-title">Experience Research Manager (Global)</span>
+            <span class="resume-job-dates">2020 – 2022</span>
+          </div>
+          <div class="resume-job-company">Mastercard</div>
+          <div class="resume-job-desc">Managed end-to-end UX research across six international markets. Shaped a sustainability-focused banking feature adopted across multiple markets.</div>
+        </div>
+        <div class="resume-job">
+          <div class="resume-job-header">
+            <span class="resume-job-title">UX Researcher</span>
+            <span class="resume-job-dates">2018 – 2020</span>
+          </div>
+          <div class="resume-job-company">Tabcorp</div>
+          <div class="resume-job-desc">Delivered rapid end-to-end UX research in a high-velocity product environment, supporting continuous improvement across B2C wagering and entertainment products.</div>
+        </div>
+        <div class="resume-job">
+          <div class="resume-job-header">
+            <span class="resume-job-title">Senior Research Executive</span>
+            <span class="resume-job-dates">2012 – 2016</span>
+          </div>
+          <div class="resume-job-company">IPG Mediabrands</div>
+          <div class="resume-job-desc">Led advertising effectiveness and brand tracking studies for major clients including Federal & NSW Government, Microsoft, Hyundai and Coca-Cola.</div>
+        </div>
+      </div>
+
+      <div class="resume-section">
+        <div class="resume-section-title">Education & Development</div>
+        <div class="resume-job">
+          <div class="resume-job-header">
+            <span class="resume-job-title">Bachelor of Communications (Advertising)</span>
+            <span class="resume-job-dates">2008 – 2010</span>
+          </div>
+          <div class="resume-job-company">Western Sydney University</div>
+        </div>
+        <div class="resume-job">
+          <div class="resume-job-header">
+            <span class="resume-job-title">UX Elevate</span>
+            <span class="resume-job-dates">2018</span>
+          </div>
+          <div class="resume-job-company">Academy Xi</div>
+        </div>
+        <div class="resume-job">
+          <div class="resume-job-header">
+            <span class="resume-job-title">UX Writing</span>
+            <span class="resume-job-dates">2019 – 2020</span>
+          </div>
+          <div class="resume-job-company">UX Writers' Collective</div>
+        </div>
+        <div class="resume-job">
+          <div class="resume-job-header">
+            <span class="resume-job-title">Currently exploring</span>
+            <span class="resume-job-dates">2026</span>
+          </div>
+          <div class="resume-job-company">AI in UX Practice</div>
+          <div class="resume-job-desc">Uxcel AI Fundamentals · Google PAIR Guidebook · Nielsen Norman Group AI Research Series</div>
+        </div>
+      </div>
+
+      <a href="Zerah_Gallardo_CV_2026.pdf" class="btn-primary" target="_blank">Download Full CV</a>
+    </div>
+
+    <div class="resume-sidebar reveal">
+      <div class="skills-group">
+        <div class="skills-group-title">Methods</div>
+        <div class="skills-pills">
+          <span class="skill-pill">In-depth interviews</span>
+          <span class="skill-pill">Usability testing</span>
+          <span class="skill-pill">Concept testing</span>
+          <span class="skill-pill">Co-creation workshops</span>
+          <span class="skill-pill">Diary studies</span>
+          <span class="skill-pill">Surveys</span>
+          <span class="skill-pill">Focus groups</span>
+        </div>
+      </div>
+      <div class="skills-group">
+        <div class="skills-group-title">AI Tools</div>
+        <div class="skills-pills">
+          <span class="skill-pill">Reduct</span>
+          <span class="skill-pill">Dialogue AI</span>
+          <span class="skill-pill">Claude</span>
+          <span class="skill-pill">ChatGPT</span>
+        </div>
+      </div>
+      <div class="skills-group">
+        <div class="skills-group-title">Research Tools</div>
+        <div class="skills-pills">
+          <span class="skill-pill">Askable</span>
+          <span class="skill-pill">UserTesting</span>
+          <span class="skill-pill">Maze</span>
+          <span class="skill-pill">Qualtrics</span>
+          <span class="skill-pill">UserZoom</span>
+          <span class="skill-pill">Rally</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">Get in touch</div>
+  <h2 class="section-title" style="color: var(--cream);">Let's work <em>together</em></h2>
+  <p class="contact-sub">Open to Senior UX Researcher roles and research consulting opportunities. Based in Sydney, open to hybrid and remote.</p>
+  <div class="contact-links">
+    <a href="/cdn-cgi/l/email-protection#eb918e998a83c58c8a87878a998f84ab8c868a8287c5888486" class="contact-link primary">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      Email me
+    </a>
+    <a href="https://www.linkedin.com/in/zerah-gallardo-ba25aa23" target="_blank" class="contact-link secondary">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+      LinkedIn
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-name">Zerah Gallardo</span>
+  <span class="footer-note">Built with curiosity & Claude · Sydney 2026</span>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  const navbar = document.getElement
